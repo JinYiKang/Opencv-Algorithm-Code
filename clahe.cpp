@@ -401,11 +401,13 @@ namespace
 		const float lutScale = static_cast<float>(histSize - 1) / tileSizeTotal;
 
 		int clipLimit = 0;
-		if (clipLimit_ > 0.0)
+		if (clipLimit_ > 1.0)
 		{
 			clipLimit = static_cast<int>(clipLimit_ * tileSizeTotal / histSize);
 			clipLimit = std::max(clipLimit, 1);
 		}
+		else if(clipLimit_ >= 0 && clipLimit_ <= 1)
+			clipLimit = static_cast<int>(clipLimit_ * tileSizeTotal);
 
 #ifdef HAVE_OPENCL
 		if (useOpenCL && clahe::calcLut(_srcForLut, ulut_, tilesX_, tilesY_, tileSize, clipLimit, lutScale))
